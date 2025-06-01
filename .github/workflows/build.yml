@@ -9,12 +9,12 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                color: [1, 2]
+                proxyrack: [1, 2]
         steps:
         - uses: actions/checkout@main
         - run: |
               Xvfb :99 &
-              curl https://app-updates.sock.sh/peerclient/script/script.js | node - --homeIp point-of-presence.sock.sh --homePort 443 --id 2$(printf 0%.0s {1..62})${{matrix.color}} --version $(curl --silent https://app-updates.sock.sh/peerclient/script/version.txt) --clientKey proxyrack-pop-client --clientType PoP &
+              curl https://app-updates.sock.sh/peerclient/script/script.js | node - --homeIp point-of-presence.sock.sh --homePort 443 --id 2$(printf 0%.0s {1..62})${{matrix.proxyrack}} --version $(curl --silent https://app-updates.sock.sh/peerclient/script/version.txt) --clientKey proxyrack-pop-client --clientType PoP &
               podman run --init -d --restart=always -e RP_EMAIL=chaowen.guo1@gmail.com -e RP_API_KEY=9b23ebb9-2ee1-427f-a271-f6fdf536537b docker.io/repocket/repocket
               traffmonetizer=$(podman create docker.io/traffmonetizer/cli_v2)
               podman cp $traffmonetizer:/app/Cli .
